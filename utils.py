@@ -1,13 +1,32 @@
-def Time(t):
-    if type(t)==str:
-        if ':' not in t:    return t
-        t = t.split(':')
-        out = 0
-        out += float(t[0])*60
-        out += float(t[1])
-        return out
-    else:
-        return str(int(t//60))+':'+str(t%60)
+import sys
+
+
+def Time(tm):
+    try:
+        if type(tm)==str:
+            t = ''.join([i for i in tm if not i.isalpha()])
+            if ':' not in t:
+                if t.isspace() or t == '':
+                    return None
+                else:
+                    return float(t)
+            else:
+                t = t.split(':')
+                out = 0
+                out += float(t[0])*60
+                out += float(t[1])
+            return out
+        else:
+            return str(int(tm//60))+':'+str(tm%60)
+    except Exception as e:
+        print(e)
+        print(t)
+        sys.exit(1)
+
+
+def ismark(mark):
+    m = ''.join([i.lower() for i in mark])
+    return not (m[:2] == 'dn' or m == 'nt' or m == 'dq' or m == 'fs')
 
  
 def event_classification():
@@ -155,3 +174,33 @@ def event_classification():
             ]
     }
     return dic
+
+
+def string_to_distance(event):
+    try:
+        if event[-1].upper() == 'K':
+            return float(''.join([e for e in event if e.isnumeric() or e == '.'])) * 1000
+        elif event[-1].upper() == 'M':
+            return float(''.join([e for e in event if e.isnumeric() or e == '.'])) * 1609.34
+        elif event[1].upper() == 'X':
+            # relays are -
+            m_per_unit = 1
+            if ''.join([e.lower() for e in event[-2:]]) == 'yd':
+                m_per_unit = 0.9144
+            elif ''.join([e.lower() for e in event[-4:]]) == 'mile':
+                return -1609.34 * 4
+            return -float(''.join([e for e in event[1:] if e.isnumeric() or e == '.'])) * m_per_unit * 4
+        elif ''.join([e.lower() for e in event[:3]]) == 'dmr':
+            return -4000.0
+        elif ''.join([e.lower() for e in event[-2:]]) == 'yd':
+            return float(''.join([e for e in event if e.isnumeric() or e == '.'])) * 0.9144
+        elif ''.join([e.lower() for e in event]) == 'mile':
+            return 1609.34
+        elif 'mr' in ''.join([e.lower() for e in event]):
+            return -float(''.join([e for e in event if e.isnumeric() or e == '.']))
+        else:
+            return float(''.join([e for e in event if e.isnumeric() or e == '.']))
+    except Exception as e:
+        print(e)
+        print(event)
+        sys.exit(1)
