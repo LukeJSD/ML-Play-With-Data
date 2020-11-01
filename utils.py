@@ -1,4 +1,7 @@
 import sys
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
 
 
 def Time(tm):
@@ -232,3 +235,29 @@ def get_records():
         }
     }
     return records
+
+
+def get_train_test(df, target, features):
+    assert type(target) == str
+    assert type(features) == list
+    targetcol = target
+    featurecols = features
+    allcols = [f for f in featurecols]
+    allcols.append(targetcol)
+    df1 = df[allcols]
+    df1 = df1.dropna()
+    X = df1[featurecols]
+    y = df1[targetcol]
+    X_train, X_test, y_train, y_test = train_test_split(
+        X.to_numpy(dtype=np.float64), y.to_numpy(dtype=np.float64), test_size=0.33, random_state=42
+    )
+    return X_train, X_test, y_train, y_test
+
+
+def make_dummy_col(df, col):
+    values = df[col].unique()
+    dic = {}
+    for dummy, val in enumerate(values):
+        df[col][df[col] == val] = dummy
+        dic[dummy] = val
+    return df, dic
