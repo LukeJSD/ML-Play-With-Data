@@ -240,24 +240,47 @@ def get_records():
 def get_train_test(df, target, features):
     assert type(target) == str
     assert type(features) == list
-    targetcol = target
-    featurecols = features
-    allcols = [f for f in featurecols]
-    allcols.append(targetcol)
+    allcols = [f for f in features]
+    allcols.append(target)
     df1 = df[allcols]
     df1 = df1.dropna()
-    X = df1[featurecols]
-    y = df1[targetcol]
+    X = df1[features]
+    y = df1[target]
     X_train, X_test, y_train, y_test = train_test_split(
         X.to_numpy(dtype=np.float64), y.to_numpy(dtype=np.float64), test_size=0.33, random_state=42
     )
     return X_train, X_test, y_train, y_test
 
 
-def make_dummy_col(df, col):
-    values = df[col].unique()
-    dic = {}
-    for dummy, val in enumerate(values):
-        df[col][df[col] == val] = dummy
-        dic[dummy] = val
-    return df, dic
+def make_dummy_col(df, col, dic=None):
+    if dic is None:
+        values = df[col].unique()
+        dic = {}
+        for dummy, val in enumerate(values):
+            df[col][df[col] == val] = dummy
+            dic[dummy] = val
+        return df, dic
+    else:
+        for dummy, val in dic.items():
+            df[col][df[col] == val] = dummy
+        return df, dic
+
+
+def get_stat_col(df, column, stat='both'):
+    assert stat in ['both', 'avg', 'std']
+    stat = ''.join([s.lower() for s in stat])
+    if stat=='avg' or stat=='both':
+        average = df.groupby(['Athlete ID', 'Distance', 'Season']).mean().to_dict()
+        ls = []
+        for k, v in average[column].items():
+            ls.append([k[0], k[1], k[2], v])
+        average = pd.DataFrame(ls, columns=['Athlete ID', 'Distance', 'Season', column+'AVG'])
+        df = pd.merge(df, average, how='inner', left_on=['Athlete ID', 'Distance', 'Season'], right_on=['Athlete ID', 'Distance', 'Season'])
+    if stat=='std' or stat=='both':
+        std = df.groupby(['Athlete ID', 'Distance', 'Season']).std().to_dict()
+        ls = []
+        for k, v in std[column].items():
+            ls.append([k[0], k[1], k[2], v])
+        std = pd.DataFrame(ls, columns=['Athlete ID', 'Distance', 'Season', column+'STD'])
+        df = pd.merge(df, std, how='inner', left_on=['Athlete ID', 'Distance', 'Season'], right_on=['Athlete ID', 'Distance', 'Season'])
+    return df
