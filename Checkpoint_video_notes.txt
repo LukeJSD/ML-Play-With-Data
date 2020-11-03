@@ -1,0 +1,36 @@
+Data: Luke 
+
+Feature  Learning: Me
+
+Model: Luke will start, Chris will end 
+
+Evaluation: Validation scoring, bestK, f1 score, confusion matrix, classification report
+
+Constraints: No elevation data, figuring what data to use, there multiple problems that 
+we can solve so it's hard kinda chose between certain areas 
+
+Project Expectations: 
+We expect have a full working model with the machine learning the best features then using 
+that to come up with a model for the data. 
+
+Results: All American predictions: Luke 
+
+Timelime: Making good progress based on initial report, data: longer figuring out what 
+problem we want to solve, modeling: shorter than we thought (about the same) 
+
+Update timelime: November 17th, figured out our best model to use 
+
+Milestones: Coming up with a concrete problem, our model is best that it can be, 
+good results, feature learning completed, model completion. 
+
+Both work collectively on everything, share work across tasks
+
+Data: Features: IDs, Time, Distance, avg, std, all americans, meet, year, place, 
+Target: All americans 
+66,000 rows of data from atheltes spanning from 2010 - present 
+
+Model: 
+KNN model bestK is 7, classifying the data into 7 separate categories 
+Use confusion, classification report, and f1 score to determine scoring of the model 
+Testing data: 2544 data points 
+Total: 7709 data: People who competed at 2019 XC nationals 
