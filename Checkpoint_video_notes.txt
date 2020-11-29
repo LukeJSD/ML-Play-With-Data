@@ -1,3 +1,19 @@
+Chris Cathcart and Luke Julian, Human Beings, Group number 57
+
+Background: We are both runners, pulling NCAA D2 cross country and track and field data
+
+Problem: Figuring out how many all americans an athlete will attain given performances
+
+Solution: KNN to classify different athletes to determine ALL American status
+
+Results: pretty good, tested on team and others: Taylor Stack, Charlie Sweeney, Rodarte
+Bix
+
+Adjust our data if we need a certain feautre (elevation)
+
+Outcome: build a solid model for predicting how many AA an athlete will attain in their
+career 
+
 Data: Luke 
 
 Feature  Learning: Me
@@ -32,5 +48,6 @@ Target: All americans
 Model: 
 KNN model bestK is 7, classifying the data into 7 separate categories 
 Use confusion, classification report, and f1 score to determine scoring of the model 
+Training data: 5165 data points 
 Testing data: 2544 data points 
 Total: 7709 data: People who competed at 2019 XC nationals 
