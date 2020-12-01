@@ -15,8 +15,9 @@ joblib = "*"
 flask = "*"
 opencv-python = "*"
 opencv-contrib-python = "*"
-numpy = "*"
-scikit-learn = "*"
+numpy = "==1.19.3"
+cython = "*"
+scikit-learn = "==0.21.3"
 
 [requires]
 python_version = "3.9"

@@ -163,18 +163,12 @@ def all_american_predict():
         season = 1
     else:
         season = 2
-    print(time)
-    print(distance)
-    print(season)
-    print(time_since_pr)
-    print(champs)
     vector = np.array([[distance, season, time, time_since_pr, champs]])
     vector = vector.astype(np.float64)
-    print(vector)
     pred = all_american_model.predict(vector)
     return jsonify({
-        "message": f"Your chance at being an all american are {pred} ",
-        "pred": pred
+        "message": f"Your chance at being an all american are {pred[0]} ",
+        "pred": pred[0]
     })
 
 @app.route("/all-american-ui")
